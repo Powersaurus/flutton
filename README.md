@@ -4,6 +4,13 @@ Flags, buttons, why not both? flutton! pico-8-based low-code game engine using f
 ### Aim/Motivation
 I watched my son create sprites and place them in the pico-8 map editor, he then wanted to turn it into a game and this wasn't immediately possible. This is my attempt to change that - using mostly the pico-8 sprite flags to give different sprites behaviours and meanings. I hope it lets people without coding experience to turn pictures into playable games.
 
+Other aims:
+- Make sure behaviours stack nicely/not too many surprises
+- Keep it under the ~2kb pico-8-edu link limit (I don't think I can do this)
+- Make it somewhat extensible if you want to write code
+- Enable a "minecraft" or "mario" clone without code
+- Throw rules out the window if they become impractical - so long as the "engine" code can be copy pasted into pico-8 I'm happy
+
 ### Sprite Flag Instructions 
 ![flutton instructions for sprite flags](/instructions.png)
  - unset - background
