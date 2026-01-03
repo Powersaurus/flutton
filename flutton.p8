@@ -36,7 +36,7 @@ function init_map()
  mapw=map_width or 32
  ents={}
  blocks={}
- p={lives=1}
+ p={lives=1,x=0,y=0}
  score=0
  lives=100
 
