@@ -53,6 +53,9 @@ function init_map()
     mset(x,y,0)
     e=new(x,y,t,function(e)end)
     add(ents,e)
+    if f&64==64 then
+     add(e.hit,upd_atk)
+	  end
    end
    if f&1==1 then
     e.spd=.5
@@ -123,7 +126,7 @@ function upd_move(t)
  update_e(t)
 end
 function upd_pickup(e,t)
-if pickup
+if act
 and not t.act
 and fget(t.s)&1==1 then
 t.act=true
@@ -132,6 +135,15 @@ e.spd=.25
 upd_chase(e)
 else
 e.spd=.1
+end
+end
+function upd_atk(e,t)
+if act
+and not t.act
+and fget(t.s)&1==1 then
+t.act=true
+e.lives-=1
+if(e.lives<1)e.del=true
 end
 end
 function upd_chase(t)
@@ -163,6 +175,7 @@ function new(x,y,s,u)
  x=x,
  y=y,
  s=s,
+ lives=5,
  vx=0,
  vy=0,
  draw=function(t)spr(t.s,t.x*8,t.y*8)end,
