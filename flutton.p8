@@ -171,12 +171,12 @@ function new(x,y,s,u)
  }
 end
 function update_p(t)
- pickup=false
+ act=false
  if(btn(0))t.vx=-t.spd
  if(btn(1))t.vx=t.spd
  if(btn(2))t.vy=-t.spd
  if(btn(3))t.vy=t.spd
- if(btn(5))pickup=true
+ if(btn(5))act=true
  update_e(t)
  t.vx,t.vy=0,0
 end
@@ -193,7 +193,7 @@ function update_e(t)
   solid=flags&2==2
   if solid then
    if flags&64==64
-   and (btn(5) or t~=p) then
+   and (act or t~=p) then
     mine(tile,t.x+tx,t.y+y)
    end
    if mx<0 then t.x=t.x\1+1
@@ -207,7 +207,8 @@ function update_e(t)
   flags=fget(tile)
   solid=flags&2==2
   if solid then
-   if flags&64==64 then
+   if flags&64==64 
+   and (act or t~=p) then
     mine(tile,t.x+x,t.y+ty)
    end
    if my<0 then t.y=t.y\1+1
