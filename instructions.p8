@@ -3,18 +3,24 @@ version 43
 __lua__
 function _draw()
  cls(1)
- x,y=30,16
+ x,y=15,13
  
- instruction(x,y+10,{1},"background")
- instruction(x,y+18,{8},"player controls")
- instruction(x,y+26,{9},"collide/scenery")
- instruction(x,y+34,{10},"player can get")
- instruction(x,y+42,{11},"hurts player")
- instruction(x,y+50,{12},"moves around")
- instruction(x,y+58,{13},"chases player")
- instruction(x,y+66,{10,13},"player can pickup")
- instruction(x,y+74,{11,13},"attacks player")
- instruction(x,y+82,{9,14},"player can mine")
+ instructions={
+  {{1},"background"},
+  {{8},"player controls"},
+  {{9},"collide/scenery"},
+  {{10},"player can get"},
+  {{11},"hurts player"},
+  {{12},"moves around"},
+  {{13},"chases player"},
+  {{9},"player can attack"},
+  {{10,13},"player can pickup/move"},
+  {{11,13},"attacks player"},
+  {{9,14},"player can mine"}
+ } 
+ for j,i in pairs(instructions) do
+  instruction(x,y+j*8+2,i[1],i[2]) 
+ end
 end
 function instruction(x,y,c,msg)
  for _,l in pairs(c) do
