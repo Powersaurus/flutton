@@ -79,7 +79,7 @@ function init_map()
    if f&4==4 then
     if f&32==32 then
      add(e.hit,upd_pickup)
-     e.spd=.25
+     e.spd=1
      e.delay=0
     else
      add(e.hit,get)
@@ -114,6 +114,7 @@ function mine(s,x,y)
   end
   blocks[x..y]=e
   add(ents,e)
+	printh("added block to mine "..#ents)
  end
 end
 function upd_move(t)
@@ -131,10 +132,10 @@ and not t.act
 and fget(t.s)&1==1 then
 t.act=true
 e.timer=0
-e.spd=.25
+e.spd=1--.75
 upd_chase(e)
 else
-e.spd=.1
+e.spd=1
 end
 end
 function upd_atk(e,t)
@@ -155,14 +156,12 @@ function upd_chase(t)
   if(p.y<t.y)t.vy=-1
   t.timer=t.delay+rnd(20)
  end
- if(abs(p.x-t.x)<.25)t.vx=0
- if(abs(p.y-t.y)<.25)t.vy=0
  update_e(t)
 end
 function collide(e)
  for _,t in pairs(ents)do
-  if abs(e.x-t.x)<1.01
-  and abs(e.y-t.y)<1.01
+  if abs(e.x-t.x)<5
+  and abs(e.y-t.y)<5
   and e.s~=t.s then
    for _,c in pairs(e.hit)do
     c(e,t)
@@ -212,7 +211,7 @@ function update_e(t)
   if solid then
    if flags&64==64
    and (act or t~=p) then
-    mine(tile,t.x+tx,t.y+y)
+    mine(tile,mx+tx,t.y+y)
    end
 	  break
   end
@@ -226,7 +225,7 @@ function update_e(t)
   if solid then
    if flags&64==64 
    and (act or t~=p) then
-    mine(tile,t.x+x,t.y+ty)
+    mine(tile,t.x+x,my+ty)
    end
 	  break
   end
