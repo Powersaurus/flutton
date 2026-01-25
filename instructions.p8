@@ -13,7 +13,7 @@ function _draw()
   {{11},"hurts player"},
   {{12},"moves around"},
   {{13},"chases player"},
-  {{9},"player can attack"},
+  {{14},"player can attack"},
   {{10,13},"player can pickup/move"},
   {{11,13},"attacks player"},
   {{9,14},"player can mine"}
