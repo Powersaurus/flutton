@@ -3,7 +3,6 @@ version 43
 __lua__
 
 -->8
--- engine
 function _init()
  saved={}
  init_map()
@@ -96,25 +95,29 @@ function get(e,t)
 end
 
 function mine(s,x,y)
- x=x\1
- y=y\1
+ x=x\8
+ y=y\8
  local e=blocks[x..y]
  if not e then
-  e=new(x,y,s,function(e)
+  e=new(x,y,10,function(e)
    e.dmg-=1
-   if(e.dmg<-1)blocks[x..y]=nil e.del=true
+   if(e.dmg<1)blocks[x..y]=nil e.del=true
   end)
-  e.dmg=0
+  e.dmg=2
+	e.r=68
   add(e.hit,function(e,t)
-   e.dmg+=2
-   if (e.dmg>30)mset(x,y,0)e.del=true
+	 if act 
+	 and not t.act then
+	  t.act=true
+    e.dmg+=2
+    if (e.dmg>60)mset(x,y,0)e.del=true
+	 end
   end)
   e.draw=function(t)
-   ?("░▒")[t.dmg\16+1],t.x*8+1,t.y*8+2,bg_colour
+   ?("∧░▒")[t.dmg\21+1],t.x+1,t.y+2,bg_colour
   end
   blocks[x..y]=e
   add(ents,e)
-	printh("added block to mine "..#ents)
  end
 end
 function upd_move(t)
@@ -132,7 +135,7 @@ and not t.act
 and fget(t.s)&1==1 then
 t.act=true
 e.timer=0
-e.spd=1--.75
+e.spd=1
 upd_chase(e)
 else
 e.spd=1
@@ -159,9 +162,11 @@ function upd_chase(t)
  update_e(t)
 end
 function collide(e)
+ local ex,ey=e.x+4,e.y+4
  for _,t in pairs(ents)do
-  if abs(e.x-t.x)<5
-  and abs(e.y-t.y)<5
+  local tx,ty=t.x+4,t.y+4
+  if ((ex-tx)*(ex-tx)+
+  (ey-ty)*(ey-ty))<e.r
   and e.s~=t.s then
    for _,c in pairs(e.hit)do
     c(e,t)
@@ -175,6 +180,7 @@ function new(x,y,s,u)
  y=y*8,
  s=s,
  lives=5,
+ r=60,
  vx=0,
  vy=0,
  draw=function(t)spr(t.s,t.x,t.y)
