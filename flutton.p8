@@ -61,7 +61,7 @@ function init()
     e.upd=upd_p
     p=e
    end
-   if(f&8==8)add(e.hit,function(e,t)if(fget(t.s,1))p.lv-=1end)
+   if(f&8==8)add(e.hit,function(e,t)if(fget(t.s,0))p.lv-=1end)
    if f&16==16 then
     e.upd=move
     e.spd=.075
@@ -88,7 +88,7 @@ function init()
 end
 
 function get(e,t)
- if(not e.del and fget(t.s,1))sc+=1
+ if(not e.del and fget(t.s,0))sc+=1
  e.del=true
 end
 
@@ -130,7 +130,7 @@ end
 function pickup(e,t)
 if act
 and not t.act
-and fget(t.s,1) then
+and fget(t.s,0) then
 t.act=true
 e.tm=0
 e.spd=1
@@ -142,7 +142,7 @@ end
 function atk(e,t)
 if act
 and not t.act
-and fget(t.s,1) then
+and fget(t.s,0) then
 t.act=true
 e.lv-=1
 if(e.lv<1)e.del=true
