@@ -71,7 +71,7 @@ function init_map()
    end
    if f&32==32 then
     if(f&4~=4)e.update=upd_chase
-    e.spd=.15
+    e.spd=.5
     e.delay=30
     e.timer=rnd(20)
    end
