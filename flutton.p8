@@ -99,7 +99,7 @@ function mine(s,x,y)
  y=y\8
  local e=blocks[x..y]
  if not e then
-  e=new(x,y,10,function(e)
+  e=new(x,y,s,function(e)
    e.dmg-=1
    if(e.dmg<1)blocks[x..y]=nil e.del=true
   end)
