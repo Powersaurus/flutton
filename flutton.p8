@@ -53,7 +53,7 @@ function init_map()
     e=new(x,y,t,function(e)end)
     add(ents,e)
     if f&64==64 then
-     add(e.hit,upd_atk)
+     add(e.hit,atk)
 	  end
    end
    if f&1==1 then
@@ -64,20 +64,20 @@ function init_map()
    end
    if(f&8==8)add(e.hit,function(e,t)if(fget(t.s)&1==1)p.lives-=1end)
    if f&16==16 then
-    e.update=upd_move
+    e.update=move
     e.spd=.075
     e.delay=30
     e.timer=rnd(20)
    end
    if f&32==32 then
-    if(f&4~=4)e.update=upd_chase
+    if(f&4~=4)e.update=chase
     e.spd=.5
     e.delay=30
     e.timer=rnd(20)
    end
    if f&4==4 then
     if f&32==32 then
-     add(e.hit,upd_pickup)
+     add(e.hit,pickup)
      e.spd=1
      e.delay=0
     else
@@ -120,7 +120,7 @@ function mine(s,x,y)
   add(ents,e)
  end
 end
-function upd_move(t)
+function move(t)
  t.timer-=1
  if t.timer<0 then
   t.vx=rnd()*2\1*2-1
@@ -129,19 +129,19 @@ function upd_move(t)
  end
  update_e(t)
 end
-function upd_pickup(e,t)
+function pickup(e,t)
 if act
 and not t.act
 and fget(t.s)&1==1 then
 t.act=true
 e.timer=0
 e.spd=1
-upd_chase(e)
+chase(e)
 else
 e.spd=1
 end
 end
-function upd_atk(e,t)
+function atk(e,t)
 if act
 and not t.act
 and fget(t.s)&1==1 then
@@ -150,7 +150,7 @@ e.lives-=1
 if(e.lives<1)e.del=true
 end
 end
-function upd_chase(t)
+function chase(t)
  t.timer-=1
  if t.timer<0 then
   t.vx=1
