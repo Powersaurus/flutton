@@ -1,8 +1,6 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
-
--->8
 function _init()
  mp={}
  init()
@@ -92,23 +90,24 @@ function get(e,t)
  e.del=true
 end
 
-function mine(s,x,y)
+function mine(t,s,x,y)
  x=x\8
  y=y\8
  local e=blocks[x..y]
  if not e then
+	t.act=true
   e=new(x,y,s,function(e)
    e.dmg-=1
    if(e.dmg<1)blocks[x..y]=nil e.del=true
   end)
-  e.dmg=2
-	e.r=68
+  e.dmg=4
+ 	e.r=120
   add(e.hit,function(e,t)
 	 if act 
 	 and not t.act then
 	  t.act=true
-    e.dmg+=2
-    if (e.dmg>60)mset(x,y,0)e.del=true
+   e.dmg+=2
+   if (e.dmg>60)mset(x,y,0)e.del=true
 	 end
   end)
   e.draw=function(t)
@@ -118,6 +117,7 @@ function mine(s,x,y)
   add(ents,e)
  end
 end
+
 function move(t)
  t.tm-=1
  if t.tm<0 then
@@ -127,6 +127,7 @@ function move(t)
  end
  upd_e(t)
 end
+
 function pickup(e,t)
 if act
 and not t.act
@@ -139,6 +140,7 @@ else
 e.spd=1
 end
 end
+
 function atk(e,t)
 if act
 and not t.act
@@ -148,6 +150,7 @@ e.lv-=1
 if(e.lv<1)e.del=true
 end
 end
+
 function chase(t)
  t.tm-=1
  if t.tm<0 then
@@ -159,6 +162,7 @@ function chase(t)
  end
  upd_e(t)
 end
+
 function collide(e)
  local ex,ey=e.x+4,e.y+4
  for _,t in pairs(ents)do
@@ -172,6 +176,7 @@ function collide(e)
   end
  end
 end
+
 function new(x,y,s,u)
  return {
  x=x*8,
@@ -181,12 +186,12 @@ function new(x,y,s,u)
  r=60,
  vx=0,
  vy=0,
- draw=function(t)spr(t.s,t.x,t.y)
- if(t.act)circ(t.x*8+4,t.y*8+4,5,10)end,
+ draw=function(t)spr(t.s,t.x,t.y)end,
  upd=u,
  hit={}
  }
 end
+
 function upd_p(t)
  act=false
  if(btn(0))t.vx=-t.spd
@@ -197,6 +202,7 @@ function upd_p(t)
  upd_e(t)
  t.vx,t.vy=0,0
 end
+
 function upd_e(t)
  t.act=false
  local tx,ty,mx,my,spd,solid,fl=
@@ -215,7 +221,7 @@ function upd_e(t)
   if solid then
    if fl&64==64
    and (act or t~=p) then
-    mine(tile,mx+tx,t.y+y)
+    mine(t,tile,mx+tx,t.y+y)
    end
 	  break
   end
@@ -229,11 +235,10 @@ function upd_e(t)
   if solid then
    if fl&64==64 
    and (act or t~=p) then
-    mine(tile,t.x+x,my+ty)
+    mine(t,tile,t.x+x,my+ty)
    end
 	  break
   end
  end
  if(not solid)t.y=my
 end
-
