@@ -100,7 +100,7 @@ function mine(t,s,x,y)
   e.lv=4
   e.r=120
   add(e.hit,function(e,t)
-  if t.act then
+  if not t.act then
    t.act=true
    e.lv+=2
    if(e.lv>60)mset(x,y,0)e.del=true
