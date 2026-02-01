@@ -14,6 +14,7 @@ function _draw()
   {{12},"moves around"},
   {{13},"chases player"},
   {{14},"player can attack"},
+  {{9,10},"is a door"},
   {{10,13},"player can pickup/move"},
   {{11,13},"attacks player"},
   {{9,14},"player can mine"}

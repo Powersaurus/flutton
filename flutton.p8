@@ -77,7 +77,7 @@ function init()
      add(e.hit,pickup)
      e.spd=1
      e.dly=0
-    else
+    elseif f&2==0 then
      add(e.hit,get)
     end
    end
@@ -116,6 +116,17 @@ function mine(t,s,x,y)
   blocks[x..y]=e
   add(ents,e)
  end
+end
+
+function door(s,x,y)
+ x\=8
+ y\=8
+ mset(x,y,0)
+ add(ents,new(-8,-8,0,function(e)
+  e.lv+=1
+	printh(e.lv)
+  if(e.lv>60)mset(x,y,s)e.del=true
+ end))
 end
 
 function move(t)
@@ -219,11 +230,14 @@ function upd_e(t)
   fl=fget(tile)
   solid=fl&2==2
   if solid then
-   if fl&64==64
-   and (act or t~=p) then
-    mine(t,tile,mx+tx,t.y+y)
+   if act or t~=p then
+    if fl&64==64 then
+     mine(t,tile,mx+tx,t.y+y)
+		elseif fl&4==4 then
+		 door(tile,mx+tx,t.y+y)
+	  end
    end
-	  break
+	 break
   end
  end
  if(not solid)t.x=mx
@@ -233,11 +247,14 @@ function upd_e(t)
   fl=fget(tile)
   solid=fl&2==2
   if solid then
-   if fl&64==64 
-   and (act or t~=p) then
-    mine(t,tile,t.x+x,my+ty)
+   if act or t~=p then
+    if fl&64==64 then
+     mine(t,tile,t.x+x,my+ty)
+		elseif fl&4==4 then
+		 door(tile,t.x+x,my+ty)
+	  end
    end
-	  break
+	 break
   end
  end
  if(not solid)t.y=my
