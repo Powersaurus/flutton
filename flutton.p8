@@ -48,7 +48,6 @@ function init()
    or f&16==16 then
     mset(x,y,0)
     e=new(x,y,t,function(e)end)
-    add(ents,e)
     if f&64==64 then
      add(e.hit,atk)
 	  end
@@ -91,30 +90,29 @@ function get(e,t)
 end
 
 function mine(t,s,x,y)
- x=x\8
- y=y\8
+ x\=8
+ y\=8
  local e=blocks[x..y]
  if not e then
 	t.act=true
   e=new(x,y,s,function(e)
-   e.dmg-=1
-   if(e.dmg<1)blocks[x..y]=nil e.del=true
+   e.lv-=1
+   if(e.lv<1)blocks[x..y]=nil e.del=true
   end)
-  e.dmg=4
+  e.lv=4
  	e.r=120
   add(e.hit,function(e,t)
 	 if act 
 	 and not t.act then
 	  t.act=true
-   e.dmg+=2
-   if (e.dmg>60)mset(x,y,0)e.del=true
+   e.lv+=2
+   if(e.lv>60)mset(x,y,0)e.del=true
 	 end
   end)
   e.draw=function(t)
-   ?("∧░▒")[t.dmg\21+1],t.x+1,t.y+2,bg
+   ?("∧░▒")[t.lv\21+1],t.x+1,t.y+2,bg
   end
   blocks[x..y]=e
-  add(ents,e)
  end
 end
 
@@ -122,11 +120,10 @@ function door(s,x,y)
  x\=8
  y\=8
  mset(x,y,0)
- add(ents,new(-8,-8,0,function(e)
+ new(-8,-8,0,function(e)
   e.lv+=1
-	printh(e.lv)
   if(e.lv>60)mset(x,y,s)e.del=true
- end))
+ end)
 end
 
 function move(t)
@@ -189,7 +186,7 @@ function collide(e)
 end
 
 function new(x,y,s,u)
- return {
+ local e={
  x=x*8,
  y=y*8,
  s=s,
@@ -201,6 +198,8 @@ function new(x,y,s,u)
  upd=u,
  hit={}
  }
+ add(ents,e)
+ return e
 end
 
 function upd_p(t)
