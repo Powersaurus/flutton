@@ -205,11 +205,20 @@ function upd_p(t)
  act=false
  if(btn(0))t.vx=-t.spd
  if(btn(1))t.vx=t.spd
- if(btn(2))t.vy=-t.spd
- if(btn(3))t.vy=t.spd
+ if g then
+  t.vy+=g
+  if(btn(4)and t.g)t.g=false t.vy-=g*20
+ else
+  if(btn(2))t.vy=-t.spd
+  if(btn(3))t.vy=t.spd
+ end
  if(btn(5))act=true
  upd_e(t)
- t.vx,t.vy=0,0
+ if g then
+  t.vx*=0.9
+ else
+  t.vx,t.vy=0,0
+ end
 end
 
 function upd_e(t)
@@ -243,6 +252,10 @@ function upd_e(t)
   f=fget(l)
   solid=f&2==2
   if solid then
+   if g then
+    t.vy=0
+    t.g=true
+   end
    if act or t~=p then
     if f&64==64 then
      mine(t,l,t.x+x,my+ty)
