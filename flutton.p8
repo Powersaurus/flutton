@@ -10,7 +10,7 @@ function _update60()
 for _,t in pairs(ents)do
 t:upd()
 if(t.del)del(ents,t)
-collide(t)
+col(t)
 end
 if(p.lv<1)init()
 end
@@ -31,11 +31,7 @@ end
 function init()
  maph=maph or 32
  mapw=mapw or 32
- ents={}
- blocks={}
- p={lv=1,x=0,y=0}
- sc=0
- lv=100
+ ents,blocks,p,sc,lv={},{},{lv=1,x=0,y=0},0,100
  for y=0,maph-1 do
   for x=0,mapw-1 do
    t=mp[y*mapw+x]
@@ -50,7 +46,7 @@ function init()
     e=new(x,y,t,function(e)end)
     if f&64==64 then
      add(e.hit,atk)
-	  end
+    end
    end
    if f&1==1 then
     e.spd=1
@@ -58,7 +54,9 @@ function init()
     e.upd=upd_p
     p=e
    end
-   if(f&8==8)add(e.hit,function(e,t)if(fget(t.s,0))p.lv-=1end)
+   if f&8==8 then
+    add(e.hit,function(e,t)if(fget(t.s,0))p.lv-=1end)
+   end
    if f&16==16 then
     e.upd=move
     e.spd=.075
@@ -94,20 +92,19 @@ function mine(t,s,x,y)
  y\=8
  local e=blocks[x..y]
  if not e then
-	t.act=true
+  t.act=true
   e=new(x,y,s,function(e)
    e.lv-=1
    if(e.lv<1)blocks[x..y]=nil e.del=true
   end)
   e.lv=4
- 	e.r=120
+  e.r=120
   add(e.hit,function(e,t)
-	 if act 
-	 and not t.act then
-	  t.act=true
+  if t.act then
+   t.act=true
    e.lv+=2
    if(e.lv>60)mset(x,y,0)e.del=true
-	 end
+  end
   end)
   e.draw=function(t)
    ?("∧░▒")[t.lv\21+1],t.x+1,t.y+2,bg
@@ -139,7 +136,7 @@ end
 function pickup(e,t)
 if act
 and not t.act
-and fget(t.s,0) then
+and fget(t.s,0)then
 t.act=true
 e.tm=0
 e.spd=1
@@ -152,7 +149,7 @@ end
 function atk(e,t)
 if act
 and not t.act
-and fget(t.s,0) then
+and fget(t.s,0)then
 t.act=true
 e.lv-=1
 if(e.lv<1)e.del=true
@@ -171,7 +168,7 @@ function chase(t)
  upd_e(t)
 end
 
-function collide(e)
+function col(e)
  local ex,ey=e.x+4,e.y+4
  for _,t in pairs(ents)do
   local tx,ty=t.x+4,t.y+4
@@ -215,7 +212,7 @@ end
 
 function upd_e(t)
  t.act=false
- local tx,ty,mx,my,spd,solid,fl=
+ local tx,ty,mx,my,spd,solid,f=
   0,0,t.vx,t.vy,t.spd
  if(t.vx>0)tx=7
  if(t.vy>0)ty=7
@@ -223,37 +220,35 @@ function upd_e(t)
   t.x+t.vx*spd,
   t.y+t.vy*spd
 
- local solid=false
  for y=0,7,7 do
-  local tile=mget((mx+tx)\8,(t.y+y)\8)
-  fl=fget(tile)
-  solid=fl&2==2
+  local l=mget((mx+tx)\8,(t.y+y)\8)
+  f=fget(l)
+  solid=f&2==2
   if solid then
    if act or t~=p then
-    if fl&64==64 then
-     mine(t,tile,mx+tx,t.y+y)
-		elseif fl&4==4 then
-		 door(tile,mx+tx,t.y+y)
-	  end
+    if f&64==64 then
+     mine(t,l,mx+tx,t.y+y)
+  elseif f&4==4 then
+   door(l,mx+tx,t.y+y)
    end
-	 break
+   end
+  break
   end
  end
  if(not solid)t.x=mx
- solid=false
  for x=0,7,7 do
-  local tile=mget((t.x+x)\8,(my+ty)\8)
-  fl=fget(tile)
-  solid=fl&2==2
+  local l=mget((t.x+x)\8,(my+ty)\8)
+  f=fget(l)
+  solid=f&2==2
   if solid then
    if act or t~=p then
-    if fl&64==64 then
-     mine(t,tile,t.x+x,my+ty)
-		elseif fl&4==4 then
-		 door(tile,t.x+x,my+ty)
-	  end
+    if f&64==64 then
+     mine(t,l,t.x+x,my+ty)
+  elseif f&4==4 then
+   door(l,t.x+x,my+ty)
    end
-	 break
+   end
+  break
   end
  end
  if(not solid)t.y=my
