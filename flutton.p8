@@ -72,7 +72,7 @@ function init()
    if f&4==4 then
     if f&32==32 then
      add(e.hit,pickup)
-     e.spd=1
+     e.spd=1.5
      e.dly=0
     elseif f&2==0 then
      add(e.hit,get)
@@ -142,6 +142,8 @@ e.tm=0
 e.spd=1
 chase(e)
 else
+e.x=(e.x+4)\8*8
+e.y=(e.y+4)\8*8
 e.spd=1
 end
 end
