@@ -15,17 +15,18 @@ Other aims:
 
 ### Sprite Flag Instructions 
 ![flutton instructions for sprite flags](/instructions.png)
- - unset - background
- - red - player controls
- - orange - collide/scenery
- - yellow - player can get
- - green - hurts player
- - blue - moves around
- - grey - chases player
- - pink - player can attack
- - yellow + grey - player can pickup/move
- - green + grey - attacks player
- - pink + orange - player can mine
+* unset - background
+* red - player controls
+* orange - blocks player movement
+* yellow - player can get
+* green - hurts player
+* blue - moves around
+* grey - chases player
+* pink - player can attack
+* orange + yellow - is a door
+* yellow + grey - player can pickup/move
+* green + grey - attacks player
+* orange + pink - player can mine
 ### Using flutton
 There are currently three options to get started with flutton:
 

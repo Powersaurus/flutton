@@ -1,14 +1,24 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
+colours={
+ [1]="unset",
+ [8]="red",
+ [9]="orange",
+ [10]="yellow",
+ [11]="green",
+ [12]="blue",
+ [13]="grey",
+ [14]="pink"
+}
+
 function _draw()
  cls(1)
- x,y=15,13
  
  instructions={
   {{1},"background"},
   {{8},"player controls"},
-  {{9},"collide/scenery"},
+  {{9},"blocks player movement"},
   {{10},"player can get"},
   {{11},"hurts player"},
   {{12},"moves around"},
@@ -18,19 +28,26 @@ function _draw()
   {{10,13},"player can pickup/move"},
   {{11,13},"attacks player"},
   {{9,14},"player can mine"}
- } 
+ }
+ printh("===")
+ local x,y=15,8
  for j,i in pairs(instructions) do
   instruction(x,y+j*8+2,i[1],i[2]) 
  end
+ 
 end
 function instruction(x,y,c,msg)
- for _,l in pairs(c) do
+ local col_key=""
+ for i,l in pairs(c) do
   circfill(x,y,3,0)
   circfill(x,y,2,l)
   pset(x+1,y-1,7)
   x+=8
+  if(i>1)col_key=col_key.." + "
+  col_key=col_key..colours[l]
  end
  print(msg,x-2,y-2,7)
+ printh("* "..col_key.." - "..msg)
 end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
