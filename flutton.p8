@@ -178,6 +178,7 @@ function col(e)
   (ey-ty)*(ey-ty))<e.r
   and e.s~=t.s then
    for _,c in pairs(e.hit)do
+    sfx(t.s)
     c(e,t)
    end
   end
