@@ -12,7 +12,7 @@ t:upd()
 if(t.del)del(ents,t)
 if(fget(t.s,0))col(t,i)
 end
-if(p.lv<1)init()
+if(p.l<1)init()
 end
 
 function _draw()
@@ -24,61 +24,59 @@ map()
 for _,t in pairs(ents)do
 t:draw()end
 camera()
-?"♥"..p.lv,1,1,7
+?"♥"..p.l,1,1,7
 ?"◆"..s,1,8
 end
 
 function init()
  maph=maph or 32
  mapw=mapw or 32
- ents,b,p,s,lv={},{},{lv=1,x=0,y=0},0,100
+ ents,b,p,s,l={},{},{l=1,x=0,y=0},0,100
  for y=0,maph-1 do
-  for x=0,mapw-1 do
-   t=mp[y*mapw+x]
-   if(t)mset(x,y,t)
-   t=mget(x,y)
-   mp[y*mapw+x]=t
-   f=fget(t)
-   local e
-   if (f&2==0 and f>0)
-   or f&16==16 then
-    mset(x,y,0)
-    e=new(x,y,t,function(e)end)
-    if f&64==64 then
-     add(e.hit,atk)
-    end
-   end
-   if f&1==1 then
-    e.spd=1
-    e.lv=lv
-    e.upd=upd_p
-    p=e
-   end
-   if f&8==8 then
-    add(e.hit,function(e,t)if(fget(t.s,0))p.lv-=1end)
-   end
-   if f&16==16 then
-    e.upd=move
-    e.spd=.075
-    e.dly=30
-    e.tm=rnd(20)
-   end
-   if f&32==32 then
-    if(f&4~=4)e.upd=chase
-    e.spd=.5
-    e.dly=30
-    e.tm=rnd(20)
-   end
-   if f&4==4 then
-    if f&32==32 then
-     add(e.hit,pickup)
-     e.spd=1.5
-     e.dly=0
-    elseif f&2==0 then
-     add(e.hit,get)
-    end
-   end
+ for x=0,mapw-1 do
+  t=mp[y*mapw+x]or mget(x,y)
+  mset(x,y,t)
+  mp[y*mapw+x]=t
+  f=fget(t)
+  local e
+  if (f&2==0 and f>0)or f&16==16 then
+  mset(x,y,0)
+  e=new(x,y,t,function(e)end)
+  if f&64==64 then
+  add(e.col,atk)
   end
+  end
+  if f&1==1 then
+   e.spd=1
+   e.l=l
+   e.upd=upd_p
+   p=e
+  end
+  if f&8==8 then
+  add(e.col,function(e,t)if(fget(t.s,0))p.l-=1end)
+  end
+  if f&16==16 then
+  e.upd=move
+  e.spd=.075
+  e.dly=30
+  e.tm=rnd(20)
+  end
+  if f&32==32 then
+  if(f&4~=4)e.upd=chase
+  e.spd=.5
+  e.dly=30
+  e.tm=rnd(20)
+  end
+  if f&4==4 then
+  if f&32==32 then
+  add(e.col,lift)
+  e.spd=1.5
+  e.dly=0
+ elseif f&2==0 then
+  add(e.col,get)
+ end
+ end
+ end
  end
 end
 
@@ -93,20 +91,20 @@ function mine(t,s,x,y)
  if not b[x..y]then
   t.act=1
   e=new(x,y,s,function(e)
-   e.lv-=1
-   if(e.lv<1)b[x..y]=nil e.del=1
+   e.l-=1
+   if(e.l<1)b[x..y]=nil e.del=1
   end)
-  e.lv=4
+  e.l=4
   e.r=120
-  add(e.hit,function(e,t)
+  add(e.col,function(e,t)
   if not t.act then
    t.act=1
-   e.lv+=2
-   if(e.lv>60)mset(x,y,0)e.del=1
+   e.l+=2
+   if(e.l>60)mset(x,y,0)e.del=1
   end
   end)
   e.draw=function(t)
-   ?("∧░▒")[t.lv\21+1],t.x+1,t.y+2,bg
+   ?("∧░▒")[t.l\21+1],t.x+1,t.y+2,bg
   end
   b[x..y]=e
  end
@@ -117,8 +115,8 @@ function door(s,x,y)
  y\=8
  mset(x,y,0)
  new(-8,-8,0,function(e)
-  e.lv+=1
-  if(e.lv>60)mset(x,y,s)e.del=1
+  e.l+=1
+  if(e.l>60)mset(x,y,s)e.del=1
  end)
 end
 
@@ -132,10 +130,8 @@ function move(t)
  upd_e(t)
 end
 
-function pickup(e,t)
-if act
-and not t.act
-and fget(t.s,0)then
+function lift(e,t)
+if act and not t.act and fget(t.s,0)then
 t.act=1
 e.tm=0
 e.spd=1
@@ -151,12 +147,10 @@ function atk(e,t)
 if g and t.y<e.y-4 and t.vy>0 then
 e.del=1
 t.vy*=-.9
-elseif act
-and not t.act
-and fget(t.s,0)then
+elseif act and not t.act and fget(t.s,0)then
 t.act=1
-e.lv-=1
-if(e.lv<1)e.del=1
+e.l-=1
+if(e.l<1)e.del=1
 end
 end
 
@@ -181,11 +175,9 @@ function col(e,i)
  for j=i+1,#ents do
   local t=ents[j]
   local tx,ty=t.x+4,t.y+4
-  if ((ex-tx)*(ex-tx)+
-  (ey-ty)*(ey-ty))<e.r
-  and e.s~=t.s then
+  if((ex-tx)*(ex-tx)+(ey-ty)*(ey-ty))<e.r and e.s~=t.s then
    sfx(t.s)
-   for _,c in pairs(t.hit)do c(t,e)end
+   for _,c in pairs(t.col)do c(t,e)end
   end
  end
 end
@@ -195,13 +187,13 @@ function new(x,y,s,u)
  x=x*8,
  y=y*8,
  s=s,
- lv=5,
+ l=5,
  r=60,
  vx=0,
  vy=0,
  draw=function(t)spr(t.s,t.x,t.y)end,
  upd=u,
- hit={}
+ col={}
  }
  add(ents,e)
  return e
