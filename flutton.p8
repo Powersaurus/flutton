@@ -25,13 +25,13 @@ for _,t in pairs(ents)do
 t:draw()end
 camera()
 ?"♥"..p.lv,1,1,7
-?"◆"..sc,1,8
+?"◆"..s,1,8
 end
 
 function init()
  maph=maph or 32
  mapw=mapw or 32
- ents,blocks,p,sc,lv={},{},{lv=1,x=0,y=0},0,100
+ ents,b,p,s,lv={},{},{lv=1,x=0,y=0},0,100
  for y=0,maph-1 do
   for x=0,mapw-1 do
    t=mp[y*mapw+x]
@@ -83,19 +83,18 @@ function init()
 end
 
 function get(e,t)
- if(not e.del and fget(t.s,0))sc+=1
+ if(not e.del and fget(t.s,0))s+=1
  e.del=1
 end
 
 function mine(t,s,x,y)
  x\=8
  y\=8
- local e=blocks[x..y]
- if not e then
+ if not b[x..y]then
   t.act=1
   e=new(x,y,s,function(e)
    e.lv-=1
-   if(e.lv<1)blocks[x..y]=nil e.del=1
+   if(e.lv<1)b[x..y]=nil e.del=1
   end)
   e.lv=4
   e.r=120
@@ -109,7 +108,7 @@ function mine(t,s,x,y)
   e.draw=function(t)
    ?("∧░▒")[t.lv\21+1],t.x+1,t.y+2,bg
   end
-  blocks[x..y]=e
+  b[x..y]=e
  end
 end
 
@@ -216,7 +215,7 @@ function upd_p(t)
   if(btn(2))t.vy=-t.spd
   if(btn(3))t.vy=t.spd
  end
- if(btn(5))act=1
+ act=btn(5)
  upd_e(t)
  if(not g)t.vx,t.vy=0,0
 end
@@ -228,10 +227,7 @@ function upd_e(t)
   0,0,t.vx,t.vy,t.spd
  if(t.vx>0)tx=7
  if(t.vy>0)ty=7
- local mx,my=
-  t.x+t.vx*spd,
-  t.y+t.vy*spd
-
+ local mx,my=t.x+t.vx*spd,t.y+t.vy*spd
  for y=0,7,7 do
   local l=mget((mx+tx)\8,(t.y+y)\8)
   f=fget(l)
