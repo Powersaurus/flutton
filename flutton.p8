@@ -175,7 +175,7 @@ function col(e,i)
  for j=i+1,#ents do
   local t=ents[j]
   local tx,ty=t.x+4,t.y+4
-  if((ex-tx)*(ex-tx)+(ey-ty)*(ey-ty))<e.r and e.s~=t.s then
+  if((ex-tx)*(ex-tx)+(ey-ty)*(ey-ty))<t.r and e.s~=t.s then
    sfx(t.s)
    for _,c in pairs(t.col)do c(t,e)end
   end
