@@ -125,9 +125,9 @@ end
 function move(t)
  t.tm-=1
  if t.tm<0 then
-  t.vx=rnd()*2\1*2-1
-  if(not g)t.vy=rnd()*2\1*2-1
-  t.tm=t.dly+rnd(20)
+ t.vx=rnd()*2\1*2-1
+ if(not g)t.vy=rnd()*2\1*2-1
+ t.tm=t.dly+rnd(20)
  end
  upd_e(t)
 end
@@ -148,7 +148,10 @@ end
 end
 
 function atk(e,t)
-if act
+if g and t.y<e.y-4 and t.vy>0 then
+e.del=1
+t.vy*=-.9
+elseif act
 and not t.act
 and fget(t.s,0)then
 t.act=1
@@ -162,7 +165,7 @@ function chase(t)
  if t.tm<0 then
  t.vx=1
  if(p.x<t.x)t.vx=-1
- if g and t.g and 5>rnd(10)then
+ if g and t.g and 10>rnd(20)then
  t.g=nil t.vy-=g*20
  else
  t.vy=1
@@ -209,7 +212,7 @@ function upd_p(t)
  if(btn(0))t.vx=-t.spd
  if(btn(1))t.vx=t.spd
  if g then
-  t.vx*=0.9
+  t.vx*=.9
   if(btn(4)and t.g)t.g=nil t.vy-=g*20
  else
   if(btn(2))t.vy=-t.spd
