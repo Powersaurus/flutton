@@ -31,7 +31,7 @@ end
 function init()
  maph=maph or 32
  mapw=mapw or 32
- ents,b,p,s,l={},{},{l=1,x=0,y=0},0,100
+ ents,b,p,s,l={},{},new(0,0,0),0,100
  for y=0,maph-1 do
  for x=0,mapw-1 do
   t=mp[y*mapw+x]or mget(x,y)
