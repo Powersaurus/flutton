@@ -84,7 +84,7 @@ end
 
 function get(e,t)
  if(not e.del and fget(t.s,0))sc+=1
- e.del=true
+ e.del=1
 end
 
 function mine(t,s,x,y)
@@ -92,18 +92,18 @@ function mine(t,s,x,y)
  y\=8
  local e=blocks[x..y]
  if not e then
-  t.act=true
+  t.act=1
   e=new(x,y,s,function(e)
    e.lv-=1
-   if(e.lv<1)blocks[x..y]=nil e.del=true
+   if(e.lv<1)blocks[x..y]=nil e.del=1
   end)
   e.lv=4
   e.r=120
   add(e.hit,function(e,t)
   if not t.act then
-   t.act=true
+   t.act=1
    e.lv+=2
-   if(e.lv>60)mset(x,y,0)e.del=true
+   if(e.lv>60)mset(x,y,0)e.del=1
   end
   end)
   e.draw=function(t)
@@ -119,7 +119,7 @@ function door(s,x,y)
  mset(x,y,0)
  new(-8,-8,0,function(e)
   e.lv+=1
-  if(e.lv>60)mset(x,y,s)e.del=true
+  if(e.lv>60)mset(x,y,s)e.del=1
  end)
 end
 
@@ -127,7 +127,7 @@ function move(t)
  t.tm-=1
  if t.tm<0 then
   t.vx=rnd()*2\1*2-1
-  t.vy=rnd()*2\1*2-1
+  if(not g)t.vy=rnd()*2\1*2-1
   t.tm=t.dly+rnd(20)
  end
  upd_e(t)
@@ -137,7 +137,7 @@ function pickup(e,t)
 if act
 and not t.act
 and fget(t.s,0)then
-t.act=true
+t.act=1
 e.tm=0
 e.spd=1
 chase(e)
@@ -152,20 +152,24 @@ function atk(e,t)
 if act
 and not t.act
 and fget(t.s,0)then
-t.act=true
+t.act=1
 e.lv-=1
-if(e.lv<1)e.del=true
+if(e.lv<1)e.del=1
 end
 end
 
 function chase(t)
  t.tm-=1
  if t.tm<0 then
-  t.vx=1
-  t.vy=1
-  if(p.x<t.x)t.vx=-1
-  if(p.y<t.y)t.vy=-1
-  t.tm=t.dly+rnd(20)
+ t.vx=1
+ if(p.x<t.x)t.vx=-1
+ if g and t.g and 5>rnd(10)then
+ t.g=nil t.vy-=g*20
+ else
+ t.vy=1
+ if(p.y<t.y)t.vy=-1
+ end
+ t.tm=t.dly+rnd(20)
  end
  upd_e(t)
 end
@@ -202,27 +206,24 @@ function new(x,y,s,u)
 end
 
 function upd_p(t)
- act=false
+ act=nil
  if(btn(0))t.vx=-t.spd
  if(btn(1))t.vx=t.spd
  if g then
-  t.vy+=g
-  if(btn(4)and t.g)t.g=false t.vy-=g*20
+  t.vx*=0.9
+  if(btn(4)and t.g)t.g=nil t.vy-=g*20
  else
   if(btn(2))t.vy=-t.spd
   if(btn(3))t.vy=t.spd
  end
- if(btn(5))act=true
+ if(btn(5))act=1
  upd_e(t)
- if g then
-  t.vx*=0.9
- else
-  t.vx,t.vy=0,0
- end
+ if(not g)t.vx,t.vy=0,0
 end
 
 function upd_e(t)
- t.act=false
+ t.act=nil
+ if(g)t.vy+=g
  local tx,ty,mx,my,spd,solid,f=
   0,0,t.vx,t.vy,t.spd
  if(t.vx>0)tx=7
@@ -239,9 +240,9 @@ function upd_e(t)
    if act or t~=p then
     if f&64==64 then
      mine(t,l,mx+tx,t.y+y)
-  elseif f&4==4 then
-   door(l,mx+tx,t.y+y)
-   end
+    elseif f&4==4 then
+     door(l,mx+tx,t.y+y)
+    end
    end
   break
   end
@@ -254,14 +255,14 @@ function upd_e(t)
   if solid then
    if g then
     t.vy=0
-    t.g=true
+    t.g=1
    end
    if act or t~=p then
     if f&64==64 then
      mine(t,l,t.x+x,my+ty)
-  elseif f&4==4 then
-   door(l,t.x+x,my+ty)
-   end
+    elseif f&4==4 then
+     door(l,t.x+x,my+ty)
+    end
    end
   break
   end
