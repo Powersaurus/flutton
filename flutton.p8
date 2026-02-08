@@ -10,7 +10,7 @@ function _update60()
 for i,t in pairs(ents)do
 t:upd()
 if(t.del)del(ents,t)
-if(fget(t.s,0))col(t,i)
+if(fget(t.s,0))col(t,0)
 end
 if(p.l<1)init()
 end
@@ -80,9 +80,9 @@ function init()
  end
 end
 
-function get(e,t)
- if(not e.del and fget(t.s,0))s+=1
- e.del=1
+function get(t,e)
+ if(not t.del and fget(e.s,0))s+=1
+ t.del=1
 end
 
 function mine(t,s,x,y)
@@ -97,11 +97,8 @@ function mine(t,s,x,y)
   e.l=4
   e.r=120
   add(e.col,function(e,t)
-  if not t.act then
-   t.act=1
    e.l+=2
    if(e.l>60)mset(x,y,0)e.del=1
-  end
   end)
   e.draw=function(t)
    ?("∧░▒")[t.l\21+1],t.x+1,t.y+2,bg
@@ -130,27 +127,27 @@ function move(t)
  upd_e(t)
 end
 
-function lift(e,t)
-if act and not t.act and fget(t.s,0)then
-t.act=1
-e.tm=0
-e.spd=1
-chase(e)
+function lift(t,e)
+if act and not e.act and fget(e.s,0)then
+e.act=1
+t.tm=0
+t.spd=1
+chase(t)
 else
-e.x=(e.x+4)\8*8
-e.y=(e.y+4)\8*8
-e.spd=1
+t.x=(t.x+4)\8*8
+t.y=(t.y+4)\8*8
+t.spd=1
 end
 end
 
-function atk(e,t)
-if g and t.y<e.y-4 and t.vy>0 then
-e.del=1
-t.vy*=-.9
-elseif act and not t.act and fget(t.s,0)then
-t.act=1
-e.l-=1
-if(e.l<1)e.del=1
+function atk(t,e)
+if g and e.y<t.y-4 and e.vy>0 then
+t.del=1
+e.vy*=-.9
+elseif act and not e.act and fget(e.s,0)then
+e.act=1
+t.l-=1
+if(t.l<1)t.del=1
 end
 end
 
