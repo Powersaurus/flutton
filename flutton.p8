@@ -7,10 +7,10 @@ function _init()
 end
 
 function _update60()
-for i,t in pairs(ents)do
+for _,t in pairs(ents)do
 t:upd()
 if(t.del)del(ents,t)
-if(fget(t.s,0))col(t,0)
+if(fget(t.s,0))col(t)
 end
 if(p.l<1)init()
 end
@@ -167,10 +167,9 @@ function chase(t)
  upd_e(t)
 end
 
-function col(e,i)
+function col(e)
  local ex,ey=e.x+4,e.y+4
- for j=i+1,#ents do
-  local t=ents[j]
+ for _,t in pairs(ents)do
   local tx,ty=t.x+4,t.y+4
   if((ex-tx)*(ex-tx)+(ey-ty)*(ey-ty))<t.r and e.s~=t.s then
    sfx(t.s)
