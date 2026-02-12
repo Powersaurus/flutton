@@ -172,8 +172,7 @@ function col(e)
  for _,t in pairs(ents)do
   local tx,ty=t.x+4,t.y+4
   if((ex-tx)*(ex-tx)+(ey-ty)*(ey-ty))<t.r and e.s~=t.s then
-   sfx(t.s)
-   for _,c in pairs(t.col)do c(t,e)end
+   sfx(t.s)for _,c in pairs(t.col)do c(t,e)end
   end
  end
 end
@@ -214,13 +213,12 @@ end
 function upd_e(t)
  t.act=nil
  if(g)t.vy+=g
- local tx,ty,mx,my,spd,solid,f=
-  0,0,t.vx,t.vy,t.spd
+ local tx,ty,mx,my,spd,solid,f,l=0,0,t.vx,t.vy,t.spd
  if(t.vx>0)tx=7
  if(t.vy>0)ty=7
  local mx,my=t.x+t.vx*spd,t.y+t.vy*spd
  for y=0,7,7 do
-  local l=mget((mx+tx)\8,(t.y+y)\8)
+  l=mget((mx+tx)\8,(t.y+y)\8)
   f=fget(l)
   solid=f&2==2
   if solid then
@@ -236,14 +234,11 @@ function upd_e(t)
  end
  if(not solid)t.x=mx
  for x=0,7,7 do
-  local l=mget((t.x+x)\8,(my+ty)\8)
+  l=mget((t.x+x)\8,(my+ty)\8)
   f=fget(l)
   solid=f&2==2
   if solid then
-   if g then
-    t.vy=0
-    t.g=1
-   end
+   if(g)t.vy=0 t.g=1
    if act or t~=p then
     if f&64==64 then
      mine(t,l,t.x+x,my+ty)
