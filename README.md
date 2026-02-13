@@ -1,7 +1,10 @@
 # flutton
-Flags, buttons, why not both? flutton! pico-8-based low-code game engine using flags+buttons. Draw things first, make them do stuff later.
+flags + buttons == flutton! pico-8-based low-code game engine using flags+buttons. Draw things first, make them do stuff later.
 
 flutton gives you a tiny engine that can be bolted on to a visuals-only project to add some simple yet fun behaviours to the environment + characters already there.
+
+## In action
+![Demonstration of turning some static sprites into a basic game](/demos/demo.gif)
 
 ## Aim/Motivation
 I watched my son create sprites and place them in the pico-8 map editor, he then wanted to turn it into a game and this wasn't immediately possible. This is my attempt to change that - using mostly the pico-8 sprite flags to give different sprites behaviours and meanings. I hope it lets people without coding experience to turn pictures into playable games.
