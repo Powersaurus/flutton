@@ -56,7 +56,7 @@ level of the code in your cart.
 - `bg` - colour of the background - pico-8 colour index from 0-15 - defaults to 0
 - `mapw` - the width of the map in number of tiles - defaults to 32
 - `maph` - the height of the map in number of tiles - defaults to 32
-- `lv` - number of lives/health units player has - defaults to 100
+- `l` - number of lives/health units player has - defaults to 100
 - `g` - defines gravity - added to player's y velocity each frame - Defaults to nil. Setting any value makes moving/chasing/player-controlled sprites subject to gravity. Leave it as nil for 8-direction movement. Jump power is 20x this value. This can have unintended consequences.
 
 ### Sprite flags
