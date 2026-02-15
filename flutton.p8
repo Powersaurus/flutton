@@ -186,7 +186,7 @@ function new(x,y,s,u)
  r=60,
  vx=0,
  vy=0,
- draw=function(t)spr(t.s,t.x,t.y)end,
+ draw=function(t)spr(t.s,t.x,t.y,1,1,g and t.vx<0)end,
  upd=u,
  col={}
  }
