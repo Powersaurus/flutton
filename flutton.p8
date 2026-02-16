@@ -53,7 +53,7 @@ function init()
    p=e
   end
   if f&8==8 then
-  add(e.col,function(e,t)if(fget(t.s,0))p.l-=1end)
+  add(e.col,function(e,t)if(fget(t.s,0))p.l-=1 end)
   end
   if f&16==16 then
   e.upd=move
@@ -95,7 +95,7 @@ function mine(t,s,x,y)
    if(e.l<1)b[x..y]=nil e.del=1
   end)
   e.l=4
-  e.r=120
+  e.r=10
   add(e.col,function(e,t)
    e.l+=2
    if(e.l>60)mset(x,y,0)e.del=1
@@ -171,7 +171,7 @@ function col(e)
  local ex,ey=e.x+4,e.y+4
  for _,t in pairs(ents)do
   local tx,ty=t.x+4,t.y+4
-  if((ex-tx)*(ex-tx)+(ey-ty)*(ey-ty))<t.r and e.s~=t.s then
+  if abs(ex-tx)<t.r and abs(ey-ty)<t.r and e.s~=t.s then
    sfx(t.s)for _,c in pairs(t.col)do c(t,e)end
   end
  end
@@ -183,7 +183,7 @@ function new(x,y,s,u)
  y=y*8,
  s=s,
  l=5,
- r=60,
+ r=8,
  vx=0,
  vy=0,
  draw=function(t)spr(t.s,t.x,t.y,1,1,g and t.vx<0)end,
