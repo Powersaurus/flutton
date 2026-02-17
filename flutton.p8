@@ -88,20 +88,20 @@ end
 function mine(t,s,x,y)
  x\=8
  y\=8
- if not b[x..y]then
+ if not b[x..y] and not t.act then
   t.act=1
   e=new(x,y,s,function(e)
    e.l-=1
-   if(e.l<1)b[x..y]=nil e.del=1
+   if(e.l<1)b[x..y]=nil e.del=1 t.act=nil
   end)
   e.l=4
-  e.r=10
+  e.r=9
   add(e.col,function(e,t)
-   e.l+=2
-   if(e.l>60)mset(x,y,0)e.del=1
+   if(act)e.l+=2
+   if(e.l>45)mset(x,y,0)e.del=1 t.act=nil
   end)
   e.draw=function(t)
-   ?("∧░▒")[t.l\21+1],t.x+1,t.y+2,bg
+   ?("∧░▒")[t.l\21+1],t.x,t.y+2,bg
   end
   b[x..y]=e
  end
@@ -137,6 +137,7 @@ else
 t.x=(t.x+4)\8*8
 t.y=(t.y+4)\8*8
 t.spd=1
+e.act=nil
 end
 end
 
@@ -211,7 +212,6 @@ function upd_p(t)
 end
 
 function upd_e(t)
- t.act=nil
  if(g)t.vy+=g
  local tx,ty,mx,my,spd,solid,f,l=0,0,t.vx,t.vy,t.spd
  if(t.vx>0)tx=7
@@ -240,7 +240,7 @@ function upd_e(t)
   if solid then
    if(g)t.vy=0 t.g=1
    if act or t~=p then
-    if f&64==64 then
+    if f&64==64 and 0.1>abs(t.vx)then
      mine(t,l,t.x+x,my+ty)
     elseif f&4==4 then
      door(l,t.x+x,my+ty)
