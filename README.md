@@ -74,3 +74,5 @@ level of the code in your cart.
 * green + grey - attacks player
 * orange + pink - player can mine
 
+### License
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)
