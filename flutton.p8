@@ -10,7 +10,6 @@ function _update60()
 for _,t in pairs(ents)do
 t:upd()
 if(t.del)del(ents,t)
-if(fget(t.s,0))col(t)
 end
 if(p.l<1)init()
 end
@@ -50,6 +49,7 @@ function init()
    e.spd=1
    e.l=l
    e.upd=upd_p
+   e.m=6
    p=e
   end
   if f&8==8 then
@@ -88,7 +88,7 @@ end
 function mine(t,s,x,y)
  x\=8
  y\=8
- if not b[x..y] and not t.act then
+ if not b[x..y]and not t.act then
   t.act=1
   e=new(x,y,s,function(e)
    e.l-=1
@@ -96,12 +96,12 @@ function mine(t,s,x,y)
   end)
   e.l=4
   e.r=9
-  add(e.col,function(e,t)
-   if(act)e.l+=2
-   if(e.l>45)mset(x,y,0)e.del=1 t.act=nil
+  add(e.col,function(e,j)
+   if(act or j~=p)e.l+=(j.m or 1)
+   if(e.l>135)mset(x,y,0)e.del=1 t.act=nil
   end)
   e.draw=function(t)
-   ?("∧░▒")[t.l\21+1],t.x,t.y+2,bg
+   ?("∧░▒")[t.l\45+1],t.x,t.y+2,bg
   end
   b[x..y]=e
  end
@@ -250,4 +250,5 @@ function upd_e(t)
   end
  end
  if(not solid)t.y=my
+ col(t)
 end
