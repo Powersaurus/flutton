@@ -21,6 +21,8 @@ Other aims:
 Other points of interest
 - This is opinonated/biased towards making action-focused games, and the interests of my son - levels isn't massively important to him, neither is score. The features I have prioritised reflect that
 - It's not the most performant code, and pretty much everything is a massive compromise in terms of how the engine operates. I know things like collision could be better, but for now it is more important it fits into a pico-8-edu url
+- There are a few flag combinations that do not work at all at the moment and will result in instant crashes
+- Weird overflow errors can and will happen, and in my home, that's part of the fun at the moment
 - Hand minified for now :/
 
 ## User guide
