@@ -7,7 +7,7 @@ flutton gives you a tiny engine that can be bolted on to a visuals-only project 
 ![Demonstration of turning some static sprites into a basic game](/demos/demo.gif)
 
 ## Aim/Motivation
-I watched my son create sprites and place them in the pico-8 map editor, he then wanted to turn it into a game and this wasn't immediately possible. This is my attempt to change that - using mostly the pico-8 sprite flags to give different sprites behaviours and meanings. I hope it lets people without coding experience to turn pictures into playable games.
+I watched my son create sprites and place them in the pico-8 map editor, he then wanted to turn it into a game and this wasn't immediately possible without writing reasonable amount of code. This is my attempt to change that - using mostly the pico-8 sprite flags to give different sprites behaviours and meanings. I hope it lets people without coding experience to turn pictures into playable games.
 
 Other aims:
 - Make sure behaviours stack nicely/not too many surprises
@@ -15,6 +15,13 @@ Other aims:
 - Make it somewhat extensible if you want to write code
 - Enable a "minecraft" or "mario" clone without code
 - Throw rules out the window if they become impractical - so long as the "engine" code can be copy pasted into pico-8 I'm happy
+  - Since starting the project I am starting to think of it as 'flutton-mini' and 'flutton-max', the former being
+- "I only want to make 3D games Daaaaaaad" - I'll plug in a raycaster one day
+
+Other points of interest
+- This is opinonated/biased towards making action-focused games, and the interests of my son - levels isn't massively important to him, neither is score. The features I have prioritised reflect that
+- It's not the most performant code, and pretty much everything is a massive compromise in terms of how the engine operates. I know things like collision could be better, but for now it is more important it fits into a pico-8-edu url
+- Hand minified for now :/
 
 ## User guide
 ### Getting started
