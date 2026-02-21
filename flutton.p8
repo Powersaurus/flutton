@@ -24,13 +24,12 @@ for _,t in pairs(ents)do
 t:draw()end
 camera()
 ?"♥"..p.l,1,1,7
-?"◆"..s,1,8
 end
 
 function init()
  maph=maph or 32
  mapw=mapw or 32
- ents,b,p,s,l={},{},new(0,0,0),0,100
+ ents,b,p,l={},{},new(0,0,0),100
  for y=0,maph-1 do
  for x=0,mapw-1 do
   t=mp[y*mapw+x]or mget(x,y)
@@ -81,7 +80,7 @@ function init()
 end
 
 function get(t,e)
- if(not t.del and fget(e.s,0))s+=1
+ if(not t.del and fget(e.s,0))p.l+=5
  t.del=1
 end
 
