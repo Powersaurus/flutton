@@ -16,9 +16,7 @@ end
 
 function _draw()
 cls(bg)
-camera(
-min(mapw*8-128,max(0,p.x-56)),
-min(maph*8-128,max(0,p.y-56)))
+camera(min(mapw*8-128,max(0,p.x-56)),min(maph*8-128,max(0,p.y-56)))
 map()
 for _,t in pairs(ents)do
 t:draw()end
@@ -186,7 +184,7 @@ function new(x,y,s,u)
  r=8,
  vx=0,
  vy=0,
- draw=function(t)spr(t.s,t.x,t.y,1,1,g and t.vx<0)end,
+ draw=function(t)spr(t.s,t.x,t.y,1,1,t.vx<0)end,
  upd=u,
  col={}
  }
@@ -196,6 +194,7 @@ end
 
 function upd_p(t)
  act=nil
+ if(not g)t.vx,t.vy=0,0
  if(btn(0))t.vx=-t.spd
  if(btn(1))t.vx=t.spd
  if g then
@@ -207,7 +206,6 @@ function upd_p(t)
  end
  act=btn(5)
  upd_e(t)
- if(not g)t.vx,t.vy=0,0
 end
 
 function upd_e(t)
