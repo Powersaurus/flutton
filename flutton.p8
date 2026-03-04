@@ -125,16 +125,21 @@ function move(t)
 end
 
 function lift(t,e)
-if act and not e.act and fget(e.s,0)then
-e.act=1
-t.tm=0
-t.spd=1
-chase(t)
+if act then
+if not t.h and not e.h and fget(e.s,0)then
+t.h=1
+e.h=1
+end
 else
 t.x=(t.x+4)\8*8
 t.y=(t.y+4)\8*8
-t.spd=1
-e.act=nil
+e.h=nil
+t.h=nil
+end
+if e.h then
+t.vx=e.vx*.7
+t.vy=e.vy*.7
+upd_e(t)
 end
 end
 
@@ -169,7 +174,7 @@ function col(e)
  local ex,ey=e.x+4,e.y+4
  for _,t in pairs(ents)do
   local tx,ty=t.x+4,t.y+4
-  if abs(ex-tx)<t.r and abs(ey-ty)<t.r and e.s~=t.s then
+  if abs(ex-tx)<t.r and abs(ey-ty)<t.r and e~=t then
    sfx(t.s)for _,c in pairs(t.col)do c(t,e)end
   end
  end
