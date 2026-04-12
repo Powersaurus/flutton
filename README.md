@@ -83,5 +83,10 @@ level of the code in your cart.
 * green + grey - attacks player
 * orange + pink - player can mine
 
+### Credits
+Flutton is written by Ben Jones.
+
+3D raycaster code is adapted from [Lode Vandevenne's Raycasting Tutorial](https://lodev.org/cgtutor/raycasting.html) which is licensed under the [BSD 2-clause license](https://opensource.org/license/bsd-2-clause/)
+
 ### License
 [BSD 3-Clause](https://opensource.org/license/BSD-3-clause)
