@@ -147,8 +147,7 @@ function atk(t,e)
 if g and e.y<t.y-4 and e.vy>0 then
 t.del=1
 e.vy*=-.9
-elseif act and not e.act and fget(e.s,0)then
-e.act=1
+elseif act and fget(e.s,0)then
 t.l-=1
 if(t.l<1)t.del=1
 end
@@ -185,7 +184,7 @@ function new(x,y,s,u)
  x=x*8,
  y=y*8,
  s=s,
- l=5,
+ l=25,
  r=8,
  vx=0,
  vy=0,
