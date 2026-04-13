@@ -53,6 +53,15 @@ The game resets when a player's life reaches zero.
 Walking out of the configured map space may result in unexpected behaviour.
 
 A sound for when two sprites collide can be set by adding a sound effect with the same index as the *sprite being collided with* adding a sound effect with the same index as the *sprite being collided with*. This means the sprite needs to have the yellow, green, or orange + pink flags set. Only sprites 0-63 can have a hit sound.
+
+### 3d
+To use 3D add the following line after including flutton.p8, or paste the code after
+```
+#include flutton-3d.p8
+```
+- The include order matters due to the 3D include overriding some functions defined in flutton-3d.p8
+- The controls will be different in 3D - the arrow keys control moving forwards and backwards and turning left and right
+- Additional parameters `floor_c` and `shade_c` are available control the colours used to simulate a separate floor and shade the wall surfaces. Each can be assigned a number representing a pico-8 colour
 ### Controls
 - Arrow keys - move playable characters in 8 directions, or left and right when gravity is enabled
 - x - use/attack/mine/pickup
