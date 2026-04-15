@@ -20,17 +20,34 @@ function init3d()
 end
 init=init3d
 
-function upd_p3d()
- local px,py=p.x\8,p.y\8
+function interact(t)
+ if act or t~=p then
+	local x,y=t.x+t.drx*5,t.y+t.dry*5
+	local l=mget(x\8,y\8)
+	local f=fget(l)
+  if f&64==64 then
+   mine(t,l,x,y)
+  elseif f&4==4 then
+   door(l,x,y)
+  end
+ end
+end
+
+function upd_p3d(p)
+ local px,py=(p.x+4)\8,(p.y+4)\8
+ if btn(5) then
+	act=true
+	interact(p)
+ end
  if btn(2) then
   local spd=0.4
   if(not fget(mget(px+p.drx*spd,py),1))p.x+=p.drx*spd
+	px=(p.x+4)\8
   if(not fget(mget(px,py+p.dry*spd),1))p.y+=p.dry*spd
- end
- px,py=p.x\8,p.y\8
- if btn(3) then
+ elseif btn(3) then
   local spd=-0.4
   if(not fget(mget(px+p.drx*spd,py),1))p.x+=p.drx*spd
+	px=(p.x+4)\8
   if(not fget(mget(px,py+p.dry*spd),1))p.y+=p.dry*spd
  end
 
@@ -52,7 +69,7 @@ function upd_p3d()
   p.camx=p.camx*cos(spd)+p.camy*sin(spd)
   p.camy=ox*-sin(spd)+p.camy*cos(spd)
  end
-
+ col(p)
 end
 
 threedee=true
@@ -70,12 +87,15 @@ _draw=function()
  else
 	fillp()
   o_draw()
+	camera(min(mapw*8-128,max(0,p.x-56)),min(maph*8-128,max(0,p.y-56)))
+	pset(p.x,p.y,7)
  end
 end
 
 function draw3d()
  fillp(0xa5a5.4)
  rectfill(0,0,127,63,bg|(bg+1)<<4)
+ fillp(0xa5a5.4)
  rectfill(0,64,127,127,floor_c|1<<4)
 -- fillp(▒)
 -- rectfill(0,42,127,88,1)
