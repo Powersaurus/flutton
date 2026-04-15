@@ -224,7 +224,7 @@ function upd_e(t)
   solid=f&2==2
   if solid then
    if act or t~=p then
-    if f&64==64 then
+    if f&64==64 and 0.1>abs(t.vy)then
      mine(t,l,mx+tx,t.y+y)
     elseif f&4==4 then
      door(l,mx+tx,t.y+y)
