@@ -17,6 +17,11 @@ function init3d()
  bg=0
  floor_c=5
  shade_c=2
+ sprites={}
+ for _,e in pairs(ents) do
+	local f=fget(e.s)
+	if(f&1~=1 and f&2~=1)add(sprites,e)
+ end
 end
 init=init3d
 
@@ -93,12 +98,15 @@ _draw=function()
 end
 
 function draw3d()
+cls(floor_c)
  fillp(0xa5a5.4)
  rectfill(0,0,127,63,bg|(bg+1)<<4)
  fillp(0xa5a5.4)
  rectfill(0,64,127,127,floor_c|1<<4)
 -- fillp(▒)
+ local z_buf={}
 -- rectfill(0,42,127,88,1)
+
  for x=0,127 do
  local cx=2*x/128-1
  local ly=127
@@ -151,6 +159,7 @@ function draw3d()
   else
    pwd=sidedisty-ddy
   end
+	z_buf[x]=pwd
   local fy=flr(128/pwd)/2+64+p.z
   local fc=sget(32+lc,max(0,min(dist-7,3)))
 
@@ -186,6 +195,60 @@ function draw3d()
  if side==1 then
   --line(x,max(clip_y,height+64),x,wh/2+64,shade_c)
  end
+ end
+
+ draw_sprites(z_buf,sprites)
+end
+
+function draw_sprites(z_buf,sprites)
+ local px,py,drx,dry,camx,neg_camy,camy=
+  p.x/8,p.y/8,p.drx,p.dry,p.camx,-p.camy,p.camy
+ local invdet=1/(camx*dry+neg_camy*drx)
+
+ --fillp(0xa5a5.4)
+ fillp()
+ 
+ for s in all(sprites) do
+  local s_x,s_y,s_z,
+   tex_x,tex_y,tex_w,tex_h=
+   s.x/8-px+.5,
+   s.y/8-py+.5,
+   12,
+   64,--s.tex_x,
+   0,--s.tex_y,
+   8,
+   8
+	local tfy=invdet*(neg_camy*s_x+camx*s_y) 
+	  
+	if tfy>0 then
+	 local s_dist=
+    sqrt(s_x*s_x+s_y*s_y)
+	 local tfx=
+	  invdet*(dry*s_x-drx*s_y)
+	
+	 local scr_x,scr_y=
+	  64*(1+tfx/tfy),
+	  64+s_z/tfy
+	   
+	 local scale_w,scale_h=
+	  tex_w/tfy*8,
+	  tex_h/tfy*16
+	  
+	 local scr_h=scale_h
+	 local tex_sc=tex_w/scr_h
+	 local ds_y=-scale_h/2+scr_y
+	 local de_y=ds_y+scr_h
+	  
+	 -- column loop
+	 for x=max(0,scr_x-scale_w),min(127,scr_x+scale_w) do
+    if z_buf[flr(x)]>s_dist then
+     local texx=tex_x+(
+      x-(-scale_w+scr_x))*4 /scale_w
+    
+     sspr(texx,0,1,8,x,ds_y,1,scale_h)
+    end
+	 end
+	end
  end
 end
 __gfx__
