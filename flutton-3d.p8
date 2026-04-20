@@ -212,21 +212,39 @@ function draw_sprites(z_buf,sprites)
  --fillp(0xa5a5.4)
  fillp()
  
+ -- precalculate distance
+ for _,s in pairs(sprites) do
+  local s_x,s_y=
+   s.x/8-px+.5,
+   s.y/8-py+.5
+	s.s_x=s_x
+	s.s_y=s_y
+	s.s_dist=sqrt(s_x*s_x+s_y*s_y)
+ end
+
+ -- sort
+ local num_sprites=#sprites
+ for i=1,num_sprites do
+  local pick=i+rnd(num_sprites-i)\1
+  if sprites[i].s_dist<sprites[pick].s_dist then
+   sprites[i],sprites[pick]=sprites[pick],sprites[i]
+  end
+ end
+
+ -- draw
  for _,s in pairs(sprites) do
   local s_x,s_y,s_z,
    tex_x,tex_y,tex_w,tex_h=
-   s.x/8-px+.5,
-   s.y/8-py+.5,
+   s.s_x,
+   s.s_y,
    12,
-   s.tex_x,--s.tex_x,
-   s.tex_y,--s.tex_y,
+   s.tex_x,
+   s.tex_y,
    8,
    8
   local tfy=invdet*(neg_camy*s_x+camx*s_y) 
     
   if tfy>0 then
-   local s_dist=
-    sqrt(s_x*s_x+s_y*s_y)
    local tfx=
     invdet*(dry*s_x-drx*s_y)
   
@@ -244,6 +262,7 @@ function draw_sprites(z_buf,sprites)
    local de_y=ds_y+scr_h
     
    -- column loop
+   local s_dist=s.s_dist
    for x=max(0,scr_x-scale_w),min(127,scr_x+scale_w) do
     if z_buf[flr(x)]>s_dist then
      local texx=tex_x+(
