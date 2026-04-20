@@ -209,8 +209,8 @@ function draw_sprites(z_buf,sprites)
   p.x/8,p.y/8,p.drx,p.dry,p.camx,-p.camy,p.camy
  local invdet=1/(camx*dry+neg_camy*drx)
 
- --fillp(0xa5a5.4)
- fillp()
+ fillp(0xa5a5.4)
+ --fillp()
  
  -- precalculate distance
  for _,s in pairs(sprites) do
