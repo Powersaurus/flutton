@@ -19,17 +19,21 @@ function init3d()
  shade_c=2
  sprites={}
  for _,e in pairs(ents) do
-	local f=fget(e.s)
-	if(f&1~=1 and f&2~=1)add(sprites,e)
+  local f=fget(e.s)
+  if f&1~=1 and f&2~=1 then
+   e.tex_x=e.s%16*8
+   e.tex_y=e.s\16*8
+   add(sprites,e)
+  end
  end
 end
 init=init3d
 
 function interact(t)
  if act or t~=p then
-	local x,y=t.x+t.drx*5,t.y+t.dry*5
-	local l=mget(x\8,y\8)
-	local f=fget(l)
+  local x,y=t.x+t.drx*5,t.y+t.dry*5
+  local l=mget(x\8,y\8)
+  local f=fget(l)
   if f&64==64 then
    mine(t,l,x,y)
   elseif f&4==4 then
@@ -41,18 +45,18 @@ end
 function upd_p3d(p)
  local px,py=(p.x+4)\8,(p.y+4)\8
  if btn(5) then
-	act=true
-	interact(p)
+  act=true
+  interact(p)
  end
  if btn(2) then
   local spd=0.4
   if(not fget(mget(px+p.drx*spd,py),1))p.x+=p.drx*spd
-	px=(p.x+4)\8
+  px=(p.x+4)\8
   if(not fget(mget(px,py+p.dry*spd),1))p.y+=p.dry*spd
  elseif btn(3) then
   local spd=-0.4
   if(not fget(mget(px+p.drx*spd,py),1))p.x+=p.drx*spd
-	px=(p.x+4)\8
+  px=(p.x+4)\8
   if(not fget(mget(px,py+p.dry*spd),1))p.y+=p.dry*spd
  end
 
@@ -90,10 +94,10 @@ _draw=function()
  if threedee then
   draw3d()
  else
-	fillp()
+  fillp()
   o_draw()
-	camera(min(mapw*8-128,max(0,p.x-56)),min(maph*8-128,max(0,p.y-56)))
-	pset(p.x,p.y,7)
+  camera(min(mapw*8-128,max(0,p.x-56)),min(maph*8-128,max(0,p.y-56)))
+  pset(p.x,p.y,7)
  end
 end
 
@@ -159,7 +163,7 @@ cls(floor_c)
   else
    pwd=sidedisty-ddy
   end
-	z_buf[x]=pwd
+  z_buf[x]=pwd
   local fy=flr(128/pwd)/2+64+p.z
   local fc=sget(32+lc,max(0,min(dist-7,3)))
 
@@ -208,47 +212,47 @@ function draw_sprites(z_buf,sprites)
  --fillp(0xa5a5.4)
  fillp()
  
- for s in all(sprites) do
+ for _,s in pairs(sprites) do
   local s_x,s_y,s_z,
    tex_x,tex_y,tex_w,tex_h=
    s.x/8-px+.5,
    s.y/8-py+.5,
    12,
-   64,--s.tex_x,
-   0,--s.tex_y,
+   s.tex_x,--s.tex_x,
+   s.tex_y,--s.tex_y,
    8,
    8
-	local tfy=invdet*(neg_camy*s_x+camx*s_y) 
-	  
-	if tfy>0 then
-	 local s_dist=
+  local tfy=invdet*(neg_camy*s_x+camx*s_y) 
+    
+  if tfy>0 then
+   local s_dist=
     sqrt(s_x*s_x+s_y*s_y)
-	 local tfx=
-	  invdet*(dry*s_x-drx*s_y)
-	
-	 local scr_x,scr_y=
-	  64*(1+tfx/tfy),
-	  64+s_z/tfy
-	   
-	 local scale_w,scale_h=
-	  tex_w/tfy*8,
-	  tex_h/tfy*16
-	  
-	 local scr_h=scale_h
-	 local tex_sc=tex_w/scr_h
-	 local ds_y=-scale_h/2+scr_y
-	 local de_y=ds_y+scr_h
-	  
-	 -- column loop
-	 for x=max(0,scr_x-scale_w),min(127,scr_x+scale_w) do
+   local tfx=
+    invdet*(dry*s_x-drx*s_y)
+  
+   local scr_x,scr_y=
+    64*(1+tfx/tfy),
+    64+s_z/tfy
+     
+   local scale_w,scale_h=
+    tex_w/tfy*8,
+    tex_h/tfy*16
+    
+   local scr_h=scale_h
+   local tex_sc=tex_w/scr_h
+   local ds_y=-scale_h/2+scr_y
+   local de_y=ds_y+scr_h
+    
+   -- column loop
+   for x=max(0,scr_x-scale_w),min(127,scr_x+scale_w) do
     if z_buf[flr(x)]>s_dist then
      local texx=tex_x+(
       x-(-scale_w+scr_x))*4 /scale_w
     
-     sspr(texx,0,1,8,x,ds_y,1,scale_h)
+     sspr(texx,tex_y,1,8,x,ds_y,1,scale_h)
     end
-	 end
-	end
+   end
+  end
  end
 end
 __gfx__
