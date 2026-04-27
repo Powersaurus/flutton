@@ -216,6 +216,7 @@ function draw_sprites(z_buf,sprites)
  
  -- precalculate distance
  for _,s in pairs(sprites) do
+  if(s.del)del(sprites,s)
   local s_x,s_y=
    s.x/8-px+.5,
    s.y/8-py+.5
