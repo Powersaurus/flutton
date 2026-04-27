@@ -103,7 +103,6 @@ end
 
 function draw3d()
 cls(floor_c)
- fillp(0xa5a5.4)
  rectfill(0,0,127,63,bg|(bg+1)<<4)
  fillp(0xa5a5.4)
  rectfill(0,64,127,127,floor_c|1<<4)
@@ -111,6 +110,9 @@ cls(floor_c)
  local z_buf={}
 -- rectfill(0,42,127,88,1)
 
+-- fillp()
+ rectfill(-24,60,151,78,1)
+ fillp(0xa5a5.4)
  for x=0,127 do
  local cx=2*x/128-1
  local ly=127
