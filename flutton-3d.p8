@@ -31,7 +31,7 @@ init=init3d
 
 function interact(t)
  if act or t~=p then
-  local x,y=t.x+t.drx*5,t.y+t.dry*5
+  local x,y=(t.x+4)+t.drx*8,(t.y+4)+t.dry*8
   local l=mget(x\8,y\8)
   local f=fget(l)
   if f&64==64 then
@@ -97,7 +97,10 @@ _draw=function()
   fillp()
   o_draw()
   camera(min(mapw*8-128,max(0,p.x-56)),min(maph*8-128,max(0,p.y-56)))
-  pset(p.x,p.y,7)
+  local px,py=p.x+4,p.y+4
+  line(px,py,px+p.drx*8,py+p.dry*8,5)
+--	local x,y=t.x\8+4+t.drx*8,t.y\8+4+t.dry*8
+  pset(px,py,7)
  end
 end
 
