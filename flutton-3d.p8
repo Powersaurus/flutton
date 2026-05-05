@@ -43,7 +43,7 @@ function interact(t)
 end
 
 function upd_p3d(p)
- local px,py=(p.x+4)\8,(p.y+4)\8
+ local px,py=(p.x+4)/8,(p.y+4)/8
  if btn(5) then
   act=true
   interact(p)
@@ -51,12 +51,12 @@ function upd_p3d(p)
  if btn(2) then
   local spd=0.4
   if(not fget(mget(px+p.drx*spd,py),1))p.x+=p.drx*spd
-  px=(p.x+4)\8
+  px=(p.x+4)/8
   if(not fget(mget(px,py+p.dry*spd),1))p.y+=p.dry*spd
  elseif btn(3) then
   local spd=-0.4
   if(not fget(mget(px+p.drx*spd,py),1))p.x+=p.drx*spd
-  px=(p.x+4)\8
+  px=(p.x+4)/8
   if(not fget(mget(px,py+p.dry*spd),1))p.y+=p.dry*spd
  end
 
@@ -99,7 +99,6 @@ _draw=function()
   camera(min(mapw*8-128,max(0,p.x-56)),min(maph*8-128,max(0,p.y-56)))
   local px,py=p.x+4,p.y+4
   line(px,py,px+p.drx*8,py+p.dry*8,5)
---	local x,y=t.x\8+4+t.drx*8,t.y\8+4+t.dry*8
   pset(px,py,7)
  end
 end
@@ -120,7 +119,7 @@ cls(floor_c)
  local cx=2*x/128-1
  local ly=127
  local go=true
- local rayx,rayy=p.x/8,p.y/8
+ local rayx,rayy=(p.x+4)/8,(p.y+4)/8
  local rdx,rdy=
   p.drx+p.camx*cx,
   p.dry+p.camy*cx
@@ -211,7 +210,7 @@ end
 
 function draw_sprites(z_buf,sprites)
  local px,py,drx,dry,camx,neg_camy,camy=
-  p.x/8,p.y/8,p.drx,p.dry,p.camx,-p.camy,p.camy
+  (p.x+4)/8,(p.y+4)/8,p.drx,p.dry,p.camx,-p.camy,p.camy
  local invdet=1/(camx*dry+neg_camy*drx)
 
  fillp(0xa5a5.4)
