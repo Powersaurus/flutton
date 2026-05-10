@@ -15,8 +15,8 @@ function init3d()
  p.upd=upd_p3d
  
  bg=0
- floor_c=5
- shade_c=2
+ floor_c=21
+ shade_c=1
  sprites={}
  for _,e in pairs(ents) do
   local f=fget(e.s)
@@ -93,6 +93,7 @@ o_draw=_draw
 _draw=function()
  if threedee then
   draw3d()
+	?"♥"..p.l,1,1,7
  else
   fillp()
   o_draw()
@@ -104,17 +105,17 @@ _draw=function()
 end
 
 function draw3d()
-cls(floor_c)
+ cls(floor_c)
  rectfill(0,0,127,63,bg|(bg+1)<<4)
  fillp(0xa5a5.4)
- rectfill(0,64,127,127,floor_c|1<<4)
--- fillp(▒)
- local z_buf={}
--- rectfill(0,42,127,88,1)
+ rectfill(0,64,127,127,floor_c)
+-- fillp(0xa4a4.4)
+ --rectfill(-24,60,151,94,shade_c)
+ --fillp(0x0505.4)
+ rectfill(-24,60,151,78,shade_c)
 
--- fillp()
- rectfill(-24,60,151,78,1)
- fillp(0xa5a5.4)
+ local z_buf={}
+
  for x=0,127 do
  local cx=2*x/128-1
  local ly=127
@@ -198,11 +199,14 @@ cls(floor_c)
  
  --fillp(0xa5a5.4)
 -- line(x,max(clip_y,height+64),x,wh/2+64,c)
+ if side==1 then
+  fillp(0xafaf.4)
+ else
+  fillp(0xa5a5.4)
+ end
  local texidx=c
  sspr(texidx*8+texx,0,1,16,x,max(clip_y,height+64),1,wh*2+1)
- if side==1 then
-  --line(x,max(clip_y,height+64),x,wh/2+64,shade_c)
- end
+ 
  end
 
  draw_sprites(z_buf,sprites)
