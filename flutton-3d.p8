@@ -26,6 +26,21 @@ function init3d()
    add(sprites,e)
   end
  end
+ if chase_cam then
+  p.tex_x=p.s%16*8
+  p.tex_y=p.s\16*8
+  add(sprites,p)
+ end
+
+ -- precalculate dist from camera
+ local px,py=(p.x+4)/8,(p.y+4)/8
+ if chase_cam then
+  px-=p.drx*2
+	py-=p.dry*2
+ end
+ for i=1,60 do
+	sort(px, py,sprites)
+ end
 end
 init=init3d
 
@@ -109,18 +124,24 @@ function draw3d()
  rectfill(0,0,127,63,bg|(bg+1)<<4)
  fillp(0xa5a5.4)
  rectfill(0,64,127,127,floor_c)
--- fillp(0xa4a4.4)
- --rectfill(-24,60,151,94,shade_c)
- --fillp(0x0505.4)
- rectfill(-24,60,151,78,shade_c)
+ rectfill(0,60,127,78,shade_c)
+ fillp(0x5e5b.4)
+ rectfill(0,79,127,85,floor_c)
 
  local z_buf={}
+
+ local rayx,rayy=(p.x+4)/8,(p.y+4)/8
+ if chase_cam then
+  rayx-=p.drx*2
+	rayy-=p.dry*2
+ end
 
  for x=0,127 do
  local cx=2*x/128-1
  local ly=127
  local go=true
- local rayx,rayy=(p.x+4)/8,(p.y+4)/8
+ local visited_empty=false
+
  local rdx,rdy=
   p.drx+p.camx*cx,
   p.dry+p.camy*cx
@@ -159,8 +180,12 @@ function draw3d()
    side=1
   end
   c=mget(mapx,mapy)
-  if fget(c)&2==2 then
+	local flag=fget(c)&2
+	if(mapx<0 or mapx>127 or mapy<0 or mapy>127)go=false
+  if flag==2 and visited_empty then
    go=false
+	elseif flag==0 then
+	 visited_empty=true
   end
   
   if side==0 then
@@ -209,19 +234,13 @@ function draw3d()
  
  end
 
- draw_sprites(z_buf,sprites)
+ draw_sprites(z_buf,sprites,rayx,rayy)
+-- line(0,64,127,64,)
 end
 
-function draw_sprites(z_buf,sprites)
- local px,py,drx,dry,camx,neg_camy,camy=
-  (p.x+4)/8,(p.y+4)/8,p.drx,p.dry,p.camx,-p.camy,p.camy
- local invdet=1/(camx*dry+neg_camy*drx)
-
- fillp(0xa5a5.4)
- --fillp()
- 
- -- precalculate distance
- for _,s in pairs(sprites) do
+function sort(px,py,sprites)
+-- precalculate distance
+ for idx,s in pairs(sprites) do
   if(s.del)del(sprites,s)
   local s_x,s_y=
    s.x/8-px+.5,
@@ -234,12 +253,22 @@ function draw_sprites(z_buf,sprites)
  -- sort
  local num_sprites=#sprites
  for i=1,num_sprites do
-  local pick=i+rnd(num_sprites-i)\1
-  if sprites[i].s_dist<sprites[pick].s_dist then
+  local pick=1+rnd(i-1)\1
+  if sprites[i].s_dist>sprites[pick].s_dist then
    sprites[i],sprites[pick]=sprites[pick],sprites[i]
   end
  end
+end
 
+function draw_sprites(z_buf,sprites,px,py)
+ local drx,dry,camx,neg_camy,camy=
+  p.drx,p.dry,p.camx,-p.camy,p.camy
+ local invdet=1/(camx*dry+neg_camy*drx)
+
+ fillp(0xa5a5.4)
+ --fillp()
+ 
+ sort(px,py,sprites)
  -- draw
  for _,s in pairs(sprites) do
   local s_x,s_y,s_z,
