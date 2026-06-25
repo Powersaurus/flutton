@@ -170,7 +170,7 @@ function chase(t)
 end
 
 function col(e)
- local ex,ey=e.x+4,e.y+4
+ local ex,ey=e.x+e.w*4,e.y+e.h*4
  for _,t in pairs(ents)do
   local tx,ty=t.x+4,t.y+4
   if abs(ex-tx)<t.r and abs(ey-ty)<t.r and e~=t then
@@ -183,15 +183,21 @@ function new(x,y,s,u)
  local e={
  x=x*8,
  y=y*8,
+ w=1,
+ h=1,
  s=s,
  l=25,
  r=8,
  vx=0,
  vy=0,
- draw=function(t)spr(t.s,t.x,t.y,1,1,t.vx<0)end,
+ draw=function(t)spr(t.s,t.x,t.y,t.w,t.h,t.vx<0)end,
  upd=u,
  col={}
  }
+ if big and s>=192 then
+  e.w=2
+	e.h=2
+ end
  add(ents,e)
  return e
 end
@@ -215,10 +221,10 @@ end
 function upd_e(t)
  if(g)t.vy+=g
  local tx,ty,mx,my,spd,solid,f,l=0,0,t.vx,t.vy,t.spd
- if(t.vx>0)tx=7
- if(t.vy>0)ty=7
+ if(t.vx>0)tx=t.w*8-1
+ if(t.vy>0)ty=t.h*8-1
  local mx,my=t.x+t.vx*spd,t.y+t.vy*spd
- for y=0,7,7 do
+ for y=0,t.h*8-1,7 do
   l=mget((mx+tx)\8,(t.y+y)\8)
   f=fget(l)
   solid=f&2==2
@@ -234,7 +240,7 @@ function upd_e(t)
   end
  end
  if(not solid)t.x=mx
- for x=0,7,7 do
+ for x=0,t.w*8-1,7 do
   l=mget((t.x+x)\8,(my+ty)\8)
   f=fget(l)
   solid=f&2==2
