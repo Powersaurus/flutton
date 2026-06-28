@@ -3,6 +3,7 @@ version 43
 __lua__
 function _init()
  mp={}
+ extra_col={}
  init()
 end
 
@@ -174,7 +175,11 @@ function col(e)
  for _,t in pairs(ents)do
   local tx,ty=t.x+4,t.y+4
   if abs(ex-tx)<t.r and abs(ey-ty)<t.r and e~=t then
-   sfx(t.s)for _,c in pairs(t.col)do c(t,e)end
+   sfx(t.s)for _,c in pairs(t.col)do
+    c(t,e)
+		local extra=extra_col[t.s]
+		if(extra)extra(t,e)
+   end
   end
  end
 end
