@@ -1,9 +1,9 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
+extra_col={}
 function _init()
  mp={}
- extra_col={}
  init()
 end
 
